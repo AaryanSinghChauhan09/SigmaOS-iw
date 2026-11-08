@@ -1,29 +1,44 @@
-//! Options model.
+//! Command-line options for iw.
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+/// Operating mode
+#[derive(Debug, Clone, PartialEq)]
 pub enum Mode {
+    /// Default mode
     Default,
-    Dev,
-    Station,
-    Link,
-    Scan,
-    Connect,
-    Disconnect,
+    /// Scan mode
+    Scan(String),
+    /// Connect mode
+    Connect(String, String),
+    /// Info mode
+    Info(String),
 }
 
+/// Command-line options
 #[derive(Debug, Clone)]
-pub struct IwOptions {
+pub struct Options {
+    /// Operating mode
     pub mode: Mode,
-    pub interface: Option<String>,
+    /// Interface name
+    pub interface: String,
+    /// JSON output
+    pub json: bool,
+    /// Debug output
+    pub debug: bool,
+    /// Verbose output
+    pub verbose: bool,
+    /// Quiet mode
+    pub quiet: bool,
 }
 
-impl Default for IwOptions {
-    fn default() -> Self { Self { mode: Mode::Default, interface: None } }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn opts() { assert_eq!(IwOptions::default().mode, Mode::Default); }
+impl Default for Options {
+    fn default() -> Self {
+        Self {
+            mode: Mode::Default,
+            interface: String::new(),
+            json: false,
+            debug: false,
+            verbose: false,
+            quiet: false,
+        }
+    }
 }
